@@ -30,13 +30,9 @@ int characterMovement(struct Body* characterBody, float deltaTime)
 	{
 		characterBody->velocity.x -= speed * deltaTime;
 	}
-	if (IsKeyDown(KEY_UP) && characterBody->velocity.y > -(maxVelocity))
+	if (IsKeyDown(KEY_UP) && characterBody->position.y == 600 - characterBody->height)
 	{
-		characterBody->velocity.y -= speed * deltaTime;
-	}
-	if (IsKeyDown(KEY_DOWN) && characterBody->velocity.y < (maxVelocity))
-	{
-		characterBody->velocity.y += speed * deltaTime;
+		characterBody->velocity.y -= 500.0f;
 	}
 	//if (IsKeyPressed(KEY_SPACE))
 	//{

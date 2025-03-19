@@ -10,7 +10,7 @@ float lerp(float a, float b, float t)
 
 int	updatePosition(struct Body* body, float deltaTime)
 {
-	float gravity = 500.0f;
+	float gravity = 1000.0f;
 	body->position.x += body->velocity.x * deltaTime;
 	body->position.y += body->velocity.y * deltaTime;
 

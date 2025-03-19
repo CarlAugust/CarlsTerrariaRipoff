@@ -10,9 +10,9 @@ struct Body {
 	float height;
 };
 
-int	updatePosition(struct Body* character, float deltaTime);
+int	updatePosition(struct Body* body, float deltaTime);
 float lerp(float a, float b, float t);
-int wallCollisions(struct Body* character);
+int wallCollisions(struct Body* body);
 
 #endif // !
 

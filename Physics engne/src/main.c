@@ -1,4 +1,4 @@
-// Physics engne.cpp : This file contains the 'main' function. Program execution begins and ends there.
+// This file contains the 'main' function. Program execution begins and ends there.
 //
 
 #include <stdio.h>
@@ -9,7 +9,7 @@
 int main()
 {
     InitWindow(800, 600, "Terraria");
-    SetTargetFPS(60);
+    SetTargetFPS(120);
 
     struct Character player;
     initCharacter(&player);
@@ -19,13 +19,14 @@ int main()
     {
         float dt = GetFrameTime();
 
-        characterMovement(&player, dt);
-        updatePosition(&player, dt);
-		wallCollisions(&player);
+        characterMovement(&player.body, dt);
+        updatePosition(&player.body, dt);
+		wallCollisions(&player.body);
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
-        drawCharacter(&player);
+        drawCharacter(&player.body);
+        DrawText(TextFormat("CURRENT FPS: %i", (int)(1.0f / dt)), 20, 20, 20, RED);
         EndDrawing();
     }
 
