@@ -5,15 +5,12 @@ typedef struct Character
 {
 	Vector2 position;
 	Vector2 velocity;
+	int playerHeight;
+	int playerWidth;
 };
 
 int drawCharacter(struct Character* character);
 int characterMovement(struct Character* character, float deltaTime);
-int	updatePosition(struct Character* character, float deltaTime);
-float lerp(float a, float b, float t);
 
 
 #endif // !
-
-
-// Womp womp

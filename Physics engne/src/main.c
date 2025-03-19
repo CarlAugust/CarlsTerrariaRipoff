@@ -9,12 +9,15 @@
 int main()
 {
     InitWindow(800, 600, "Terraria");
+    SetTargetFPS(60);
 
     struct Character player;
     player.position.x = 400.0f;
     player.position.y = 400.0f;
     player.velocity.x = 0.0f;
     player.velocity.y = 0.0f;
+	player.playerHeight = 10;
+	player.playerWidth = 10;
 
 
     while (!WindowShouldClose())
@@ -23,6 +26,7 @@ int main()
 
         characterMovement(&player, dt);
         updatePosition(&player, dt);
+		wallCollisions(&player);
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
