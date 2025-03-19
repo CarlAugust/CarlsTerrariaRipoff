@@ -12,12 +12,7 @@ int main()
     SetTargetFPS(60);
 
     struct Character player;
-    player.position.x = 400.0f;
-    player.position.y = 400.0f;
-    player.velocity.x = 0.0f;
-    player.velocity.y = 0.0f;
-	player.playerHeight = 10;
-	player.playerWidth = 10;
+    initCharacter(&player);
 
 
     while (!WindowShouldClose())

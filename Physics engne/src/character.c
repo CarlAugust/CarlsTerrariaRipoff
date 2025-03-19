@@ -1,35 +1,46 @@
 #include "raylib.h"
 #include "character.h"
+#include "physics.h"
 #include "math.h"
 
-int drawCharacter(struct Character* character)
+int initCharacter(struct Character* character)
 {
-	DrawRectangle(character->position.x, character->position.y, 10, 10, RED);
+	character->body.position.x = 0;
+	character->body.position.y = 0;
+	character->body.velocity.x = 0;
+	character->body.velocity.y = 0;
+	character->body.height = 10;
+	character->body.width = 10;
 }
 
-int characterMovement(struct Character *character, float deltaTime)
+int drawCharacter(struct Body* characterBody)
+{
+	DrawRectangle(characterBody->position.x, characterBody->position.y, characterBody->width, characterBody->height, RED);
+}
+
+int characterMovement(struct Body* characterBody, float deltaTime)
 {
 	float maxVelocity = 4000.0f;
 	float speed = 1600.0f;
-	if (IsKeyDown(KEY_RIGHT) && character->velocity.x < maxVelocity)
+	if (IsKeyDown(KEY_RIGHT) && characterBody->velocity.x < maxVelocity)
 	{
-		character->velocity.x += speed * deltaTime;
+		characterBody->velocity.x += speed * deltaTime;
 	}
-	if (IsKeyDown(KEY_LEFT) && character->velocity.x > -(maxVelocity))
+	if (IsKeyDown(KEY_LEFT) && characterBody->velocity.x > -(maxVelocity))
 	{
-		character->velocity.x -= speed * deltaTime;
+		characterBody->velocity.x -= speed * deltaTime;
 	}
-	if (IsKeyDown(KEY_UP) && character->velocity.y > -(maxVelocity))
+	if (IsKeyDown(KEY_UP) && characterBody->velocity.y > -(maxVelocity))
 	{
-		character->velocity.y -= speed * deltaTime;
+		characterBody->velocity.y -= speed * deltaTime;
 	}
-	if (IsKeyDown(KEY_DOWN) && character->velocity.y < (maxVelocity))
+	if (IsKeyDown(KEY_DOWN) && characterBody->velocity.y < (maxVelocity))
 	{
-		character->velocity.y += speed * deltaTime;
+		characterBody->velocity.y += speed * deltaTime;
 	}
 	//if (IsKeyPressed(KEY_SPACE))
 	//{
-	//	character->velocity.x = fmodf((float)rand(), 5000.0f) - 2500.0f;
-	//	character->velocity.y = fmodf((float)rand(), 5000.0f) - 2500.0f;
+	//	characterBody->velocity.x = fmodf((float)rand(), 5000.0f) - 2500.0f;
+	//	characterBody->velocity.y = fmodf((float)rand(), 5000.0f) - 2500.0f;
 	//}
 }

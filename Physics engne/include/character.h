@@ -1,16 +1,16 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
+#include <physics.h>
+
 typedef struct Character
 {
-	Vector2 position;
-	Vector2 velocity;
-	int playerHeight;
-	int playerWidth;
+	struct Body body;
 };
 
-int drawCharacter(struct Character* character);
-int characterMovement(struct Character* character, float deltaTime);
+int initCharacter(struct Character* character);
+int drawCharacter(struct Body* characterBody);
+int characterMovement(struct Body* characterBody, float deltaTime);
 
 
 #endif // !
