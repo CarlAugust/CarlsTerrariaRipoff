@@ -21,11 +21,14 @@
   <ItemGroup>
     <ClInclude Include="include\character.h" />
     <ClInclude Include="include\physics.h" />
+    <ClInclude Include="include\terrain.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\character.c" />
+    <ClCompile Include="src\horse.c" />
     <ClCompile Include="src\main.c" />
     <ClCompile Include="src\physics.c" />
+    <ClCompile Include="src\terrain.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

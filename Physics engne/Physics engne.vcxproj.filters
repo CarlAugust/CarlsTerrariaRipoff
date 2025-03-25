@@ -24,12 +24,21 @@
     <ClCompile Include="src\physics.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\terrain.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\horse.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\character.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\physics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\terrain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

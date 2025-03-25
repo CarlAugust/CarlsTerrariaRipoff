@@ -9,9 +9,9 @@ int initCharacter(struct Character* character)
 	character->body.position.y = 0;
 	character->body.velocity.x = 0;
 	character->body.velocity.y = 0;
-	character->body.height = 10;
-	character->body.width = 10;
-}
+	character->body.height = 50;
+	character->body.width = 20;
+};
 
 int drawCharacter(struct Body* characterBody)
 {
@@ -30,9 +30,9 @@ int characterMovement(struct Body* characterBody, float deltaTime)
 	{
 		characterBody->velocity.x -= speed * deltaTime;
 	}
-	if (IsKeyDown(KEY_UP) && characterBody->position.y == 600 - characterBody->height)
+	if (IsKeyDown(KEY_UP) && characterBody->velocity.x > -(maxVelocity))
 	{
-		characterBody->velocity.y -= 500.0f;
+		characterBody->velocity.y -= speed * 3 * deltaTime;
 	}
 	//if (IsKeyPressed(KEY_SPACE))
 	//{

@@ -4,30 +4,51 @@
 #include <stdio.h>
 #include "raylib.h"
 #include "physics.h"
+#include "terrain.h"
 #include "character.h"
 
 int main()
 {
-    InitWindow(800, 600, "Terraria");
+	int screenWidth = 800;
+	int screenHeight = 600;
+    InitWindow(screenWidth, screenHeight, "Terraria");
     SetTargetFPS(120);
 
     struct Character player;
     initCharacter(&player);
 
+    Camera2D camera = { 0 };
+    camera.target = (Vector2){ player.body.position.x + 20.0f, player.body.position.y + 20.0f };
+    camera.offset = (Vector2){ screenWidth / 2.0f, screenHeight / 2.0f };
+    camera.rotation = 0.0f;
+    camera.zoom = 1.0f;
 
     while (!WindowShouldClose())
     {
         float dt = GetFrameTime();
 
+        //Camera
+        camera.target = (Vector2){ player.body.position.x + 20, player.body.position.y + 20 };
+
+        // Game
         characterMovement(&player.body, dt);
         updatePosition(&player.body, dt);
 		wallCollisions(&player.body);
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
+
+		BeginMode2D(camera);
         drawCharacter(&player.body);
         DrawText(TextFormat("CURRENT FPS: %i", (int)(1.0f / dt)), 20, 20, 20, RED);
+        DrawRectangle(0, 0, 100, 100, GREEN);
+		DrawRectangle(-screenWidth, screenHeight, screenWidth*2, screenHeight, BLUE);
+
+        EndMode2D();
+
         EndDrawing();
+
+		printf("Player position: %f, %f\n", player.body.position.x, player.body.position.y);
     }
 
     CloseWindow();

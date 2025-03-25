@@ -1,6 +1,5 @@
 #include "physics.h"
 #include <raylib.h>
-#include <physics.h>
 #include <character.h>
 
 float lerp(float a, float b, float t)
@@ -10,7 +9,7 @@ float lerp(float a, float b, float t)
 
 int	updatePosition(struct Body* body, float deltaTime)
 {
-	float gravity = 1000.0f;
+	float gravity = 2000.0f;
 	body->position.x += body->velocity.x * deltaTime;
 	body->position.y += body->velocity.y * deltaTime;
 
