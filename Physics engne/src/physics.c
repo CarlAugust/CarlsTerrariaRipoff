@@ -1,6 +1,7 @@
 #include "physics.h"
 #include <raylib.h>
 #include <character.h>
+#include <terrain.h>
 
 float lerp(float a, float b, float t)
 {
@@ -13,7 +14,7 @@ int	updatePosition(struct Body* body, float deltaTime)
 	body->position.x += body->velocity.x * deltaTime;
 	body->position.y += body->velocity.y * deltaTime;
 
-	float damping = 0.9f;
+	float damping = 0.95f;
 	body->velocity.x = lerp(body->velocity.x, 0, damping * deltaTime);
 	body->velocity.y = lerp(body->velocity.y, 0, damping * deltaTime);
 
@@ -25,14 +26,14 @@ int	updatePosition(struct Body* body, float deltaTime)
 
 int wallCollisions(struct Body* body)
 {
-	if (body->position.x < 0)
+	if (body->position.x < -(WORLDWIDTH/2))
 	{
-		body->position.x = 0;
+		body->position.x = -(WORLDWIDTH/2);
 		body->velocity.x = 0;
 	}
-	if (body->position.x > 800 - body->width)
+	if (body->position.x > WORLDWIDTH/2 - body->width)
 	{
-		body->position.x = 800 - body->width;
+		body->position.x = WORLDWIDTH/2 - body->width;
 		body->velocity.x = 0;
 	}
 	if (body->position.y < 0)

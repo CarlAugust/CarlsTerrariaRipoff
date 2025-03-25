@@ -15,7 +15,7 @@ int initCharacter(struct Character* character)
 
 int drawCharacter(struct Body* characterBody)
 {
-	DrawRectangle(characterBody->position.x, characterBody->position.y, characterBody->width, characterBody->height, RED);
+	DrawRectangleV(characterBody->position, (Vector2) { characterBody->width, characterBody->height }, RED);
 }
 
 int characterMovement(struct Body* characterBody, float deltaTime)

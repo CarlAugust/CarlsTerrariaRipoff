@@ -12,43 +12,46 @@ int main()
 	int screenWidth = 800;
 	int screenHeight = 600;
     InitWindow(screenWidth, screenHeight, "Terraria");
-    SetTargetFPS(120);
+    SetTargetFPS(60);
 
+    // Init player
     struct Character player;
     initCharacter(&player);
 
+    // Init camera
     Camera2D camera = { 0 };
     camera.target = (Vector2){ player.body.position.x + 20.0f, player.body.position.y + 20.0f };
     camera.offset = (Vector2){ screenWidth / 2.0f, screenHeight / 2.0f };
     camera.rotation = 0.0f;
     camera.zoom = 1.0f;
 
+    //Init world
+    int** world = getWorld();
+
     while (!WindowShouldClose())
     {
         float dt = GetFrameTime();
 
-        //Camera
-        camera.target = (Vector2){ player.body.position.x + 20, player.body.position.y + 20 };
 
         // Game
         characterMovement(&player.body, dt);
         updatePosition(&player.body, dt);
 		wallCollisions(&player.body);
+        
+        camera.target = (Vector2){ player.body.position.x + 20.0f, player.body.position.y + 20.0f };
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
 		BeginMode2D(camera);
         drawCharacter(&player.body);
-        DrawText(TextFormat("CURRENT FPS: %i", (int)(1.0f / dt)), 20, 20, 20, RED);
         DrawRectangle(0, 0, 100, 100, GREEN);
 		DrawRectangle(-screenWidth, screenHeight, screenWidth*2, screenHeight, BLUE);
 
         EndMode2D();
+        DrawText(TextFormat("CURRENT FPS: %i", (int)(1.0f / dt)), 20, 20, 20, RED);
 
         EndDrawing();
-
-		printf("Player position: %f, %f\n", player.body.position.x, player.body.position.y);
     }
 
     CloseWindow();

@@ -1,7 +1,8 @@
 #ifndef TERRAIN_H
 #define TERRAIN_H
+#define WORLDWIDTH 10000
+#define WORLDHEIGHT 2000
 
-int** generateTerrain();
-int perlinNoise(x, y, z);
+int** getWorld();
 
 #endif // !
