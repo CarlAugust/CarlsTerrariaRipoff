@@ -26,7 +26,7 @@ int main()
     camera.zoom = 1.0f;
 
     //Init world
-    int** world = getWorld();
+    int** world = createWorld(1000);
 
     while (!WindowShouldClose())
     {
@@ -47,6 +47,23 @@ int main()
         drawCharacter(&player.body);
         DrawRectangle(0, 0, 100, 100, GREEN);
 		DrawRectangle(-screenWidth, screenHeight, screenWidth*2, screenHeight, BLUE);
+
+        for (int x = (int)floor(player.body.position.x / 10); x < 10; x++)
+        {
+            for (int y = (int)floor(player.body.position.y / 10); y < 10; y++)
+            {
+                if (x > 0)
+                {
+                    Color color = WHITE;
+                    if (world[x][y] == DIRT)
+                    {
+                        color = BROWN;
+                    }
+                    DrawRectangle(x, y, 10, 10, color);
+                }
+            }
+
+        }
 
         EndMode2D();
         DrawText(TextFormat("CURRENT FPS: %i", (int)(1.0f / dt)), 20, 20, 20, RED);
