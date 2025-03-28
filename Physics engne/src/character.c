@@ -7,7 +7,7 @@
 int initCharacter(struct Character* character)
 {
 	character->body.position.x = WORLDWIDTH/2;
-	character->body.position.y = 100;
+	character->body.position.y = 10000;
 	character->body.velocity.x = 0;
 	character->body.velocity.y = 0;
 	character->body.height = 50;

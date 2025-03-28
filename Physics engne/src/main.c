@@ -44,35 +44,36 @@ int main()
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
-		BeginMode2D(camera);
-        drawCharacter(&player.body);
+        BeginMode2D(camera);
         DrawRectangle(0, 0, 100, 100, GREEN);
-		DrawRectangle(-screenWidth, screenHeight, screenWidth*2, screenHeight, BLUE);
+        DrawRectangle(-screenWidth, screenHeight, screenWidth * 2, screenHeight, BLUE);
 
-        int xPosTiles = (int)floor(player.body.position.x / 10);
-        for (int x = xPosTiles - 10; x < xPosTiles + 10; x++)
+        int playerTileX = (int)floor(player.body.position.x / 10);
+        int playerTileY = (int)floor(player.body.position.y / 10);
+
+        int renderDistance = 50;
+
+        for (int x = playerTileX - renderDistance; x <= playerTileX + renderDistance; x++)
         {
-            int yPosTiles = (int)floor(player.body.position.y / 10);
-            for (int y = yPosTiles -10; y < yPosTiles + 10; y++)
+            for (int y = playerTileY - renderDistance; y <= playerTileY + renderDistance; y++)
             {
-                if (x > 0 && x < WORLDWIDTH && y > 0 && y < WORLDHEIGHT)
+                if (x >= 0 && x < WORLDWIDTH && y >= 0 && y < WORLDHEIGHT)
                 {
-                    Color color = WHITE;
+                    Color color = BLUE;
                     if (world[x][y] == DIRT)
                     {
                         color = BROWN;
                     }
-                    DrawRectangle(x, y, 10, 10, color);
-                    printf("DREW\n");
+                    DrawRectangle(x * 10, y * 10, 10, 10, color);
                 }
             }
-
         }
 
+        drawCharacter(&player.body);
         EndMode2D();
+
         DrawText(TextFormat("CURRENT FPS: %i", (int)(1.0f / dt)), 20, 20, 20, RED);
         DrawText(TextFormat("CURRENT POSITION: x, %f y, %f", player.body.position.x, player.body.position.y), 20, 40, 20, RED);
-
 
         EndDrawing();
     }
