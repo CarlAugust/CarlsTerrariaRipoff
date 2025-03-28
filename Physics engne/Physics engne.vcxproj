@@ -84,7 +84,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\carla\source\repos\Physics engne\Physics engne\include;C:\Users\carla\source\repos\Physics engne\Physics engne\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\Carl\source\repos\CarlsTerrariaRipoff\Physics engne\include;C:\Users\carla\source\repos\Physics engne\Physics engne\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>C:\Users\carla\source\repos\Physics engne\Physics engne\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>

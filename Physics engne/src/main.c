@@ -6,6 +6,7 @@
 #include "physics.h"
 #include "terrain.h"
 #include "character.h"
+#include "math.h"
 
 int main()
 {
@@ -48,11 +49,13 @@ int main()
         DrawRectangle(0, 0, 100, 100, GREEN);
 		DrawRectangle(-screenWidth, screenHeight, screenWidth*2, screenHeight, BLUE);
 
-        for (int x = (int)floor(player.body.position.x / 10); x < 10; x++)
+        int xPosTiles = (int)floor(player.body.position.x / 10);
+        for (int x = xPosTiles - 10; x < xPosTiles + 10; x++)
         {
-            for (int y = (int)floor(player.body.position.y / 10); y < 10; y++)
+            int yPosTiles = (int)floor(player.body.position.y / 10);
+            for (int y = yPosTiles -10; y < yPosTiles + 10; y++)
             {
-                if (x > 0)
+                if (x > 0 && x < WORLDWIDTH && y > 0 && y < WORLDHEIGHT)
                 {
                     Color color = WHITE;
                     if (world[x][y] == DIRT)
@@ -60,6 +63,7 @@ int main()
                         color = BROWN;
                     }
                     DrawRectangle(x, y, 10, 10, color);
+                    printf("DREW\n");
                 }
             }
 
@@ -67,6 +71,8 @@ int main()
 
         EndMode2D();
         DrawText(TextFormat("CURRENT FPS: %i", (int)(1.0f / dt)), 20, 20, 20, RED);
+        DrawText(TextFormat("CURRENT POSITION: x, %f y, %f", player.body.position.x, player.body.position.y), 20, 40, 20, RED);
+
 
         EndDrawing();
     }

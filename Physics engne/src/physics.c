@@ -26,14 +26,14 @@ int	updatePosition(struct Body* body, float deltaTime)
 
 int wallCollisions(struct Body* body)
 {
-	if (body->position.x < -(WORLDWIDTH/2))
+	if (body->position.x <= 0)
 	{
-		body->position.x = -(WORLDWIDTH/2);
+		body->position.x = 0;
 		body->velocity.x = 0;
 	}
-	if (body->position.x > WORLDWIDTH/2 - body->width)
+	if (body->position.x > WORLDWIDTH * 10 - body->width)
 	{
-		body->position.x = WORLDWIDTH/2 - body->width;
+		body->position.x = WORLDWIDTH * 10 - body->width;
 		body->velocity.x = 0;
 	}
 	if (body->position.y < 0)
@@ -41,9 +41,9 @@ int wallCollisions(struct Body* body)
 		body->position.y = 0;
 		body->velocity.y = 0;
 	}
-	if (body->position.y > 600 - body->height)
+	if (body->position.y > WORLDHEIGHT * 10 - body->height)
 	{
-		body->position.y = 600 - body->height;
+		body->position.y = WORLDHEIGHT * 10 - body->height;
 		body->velocity.y = 0;
 	}
 }

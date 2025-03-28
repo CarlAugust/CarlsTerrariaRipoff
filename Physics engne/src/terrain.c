@@ -34,6 +34,10 @@ int** getWorld()
 			printf("Error when allocating\n");
 			exit(1);
 		}
+		for (int j = 0; j < WORLDHEIGHT; j++)
+		{
+			world[i][j] = AIR;
+		}
 	}
 	return world;
 }
@@ -121,12 +125,10 @@ int shapeOverworld(int seed, int startHeight, int** world)
 		float height = floor(perlinGenerate1d(x, seed) * 20);
 		for (int y = 0; y < height + startHeight; y++)
 		{
-			printf("%i, %i\n", x, y);
 			world[x][y] = AIR;
 		}
 		for (int y = height + startHeight; y < WORLDHEIGHT; y++)
 		{
-			printf("%i, %i\n", x, y);
 			world[x][y] = DIRT;
 		}
 	}
@@ -136,9 +138,13 @@ int** createWorld(int seed)
 {
 	printf("STARTING GENERATION\n");
 	int** world = getWorld();
+	int count = 0;
+
 	printf("GOT WORLD\n");
-	shapeOverworld(seed, 1000, &world);
+	shapeOverworld(seed, 1000, world);
 	printf("FINISHED GENERATION\n");
+
+	return world;
 }
 
 

@@ -2,11 +2,12 @@
 #include "character.h"
 #include "physics.h"
 #include "math.h"
+#include "terrain.h"
 
 int initCharacter(struct Character* character)
 {
-	character->body.position.x = 0;
-	character->body.position.y = 0;
+	character->body.position.x = WORLDWIDTH/2;
+	character->body.position.y = 100;
 	character->body.velocity.x = 0;
 	character->body.velocity.y = 0;
 	character->body.height = 50;
