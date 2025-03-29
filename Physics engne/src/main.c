@@ -12,6 +12,10 @@ int main()
 {
 	int screenWidth = 800;
 	int screenHeight = 600;
+
+    //Init world
+    int** world = createWorld(1000);
+
     InitWindow(screenWidth, screenHeight, "Terraria");
     SetTargetFPS(60);
 
@@ -25,9 +29,6 @@ int main()
     camera.offset = (Vector2){ screenWidth / 2.0f, screenHeight / 2.0f };
     camera.rotation = 0.0f;
     camera.zoom = 1.0f;
-
-    //Init world
-    int** world = createWorld(1000);
 
     while (!WindowShouldClose())
     {

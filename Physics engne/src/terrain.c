@@ -65,12 +65,13 @@ float getRandomVector(int x, int y, int seed)
 
 }
 
-float perlinGenerate1d(int x, int seed)
+float perlinGenerate1d(float x, int seed)
 {
-	float rmix = fmodf(x, 1.0f);
+	int xi = floor(x);
+	float rmix = x - xi;
 
-	float A = getRandomVector(x, 0, seed);
-	float B = getRandomVector(x + 1, 0, seed);
+	float A = getRandomVector(xi, 0, seed);
+	float B = getRandomVector(xi + 1, 0, seed);
 
 
 	// Interpolate
@@ -89,9 +90,30 @@ float perlinGenerate1d(int x, int seed)
 	return result;
 }
 
-float perlinGenerate2d(int x, int y, int seed)
+float perlinGenerate1dOctaves(int x, int seed, int octaves, float persistence)
+{
+	float total = 0.0f;
+	float maxAmplitude = 0.0f;
+	float amplitude = 1.0f;
+	float frequency = 1.0f;
+
+	for (int i = 0; i < octaves; i++)
+	{
+		float noise = perlinGenerate1d(x * frequency, seed);
+		total += noise * amplitude;
+		maxAmplitude += amplitude;
+		amplitude *= persistence;
+		frequency *= 2.0f;
+	}
+
+	// Normalize the result to keep values in range [-1, 1]
+	return total / maxAmplitude;
+}
+
+float perlinGenerate2d(float x, float y, int seed)
 {
 	float rmix = fmodf(x, 1.0f);
+
 	float rmiy = fmodf(y, 1.0f);
 
 	float A = getRandomVector(x, y, 0);
@@ -120,9 +142,11 @@ float perlinGenerate2d(int x, int y, int seed)
 
 int shapeOverworld(int seed, int startHeight, int** world)
 {
+	printf("THIS VERY COOL SHAPE OVERWORLD %f", floor(perlinGenerate1dOctaves(10, seed, 5, 0.5f)));
 	for (int x = 0; x < WORLDWIDTH; x++)
 	{
-		float height = floor(perlinGenerate1d(x, seed) * 20);
+		float terrainHeight = perlinGenerate1dOctaves(x, seed, 12, 0.5f);
+		float height = floor((terrainHeight + 1.0f) * 0.5f * 100);
 		for (int y = 0; y < height + startHeight; y++)
 		{
 			world[x][y] = AIR;
