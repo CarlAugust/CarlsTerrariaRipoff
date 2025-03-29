@@ -48,20 +48,20 @@ float dotProduct(Vector2 a, Vector2 b)
 	return a.x * b.x + a.y * b.y;
 }
 
+Vector2 vectorSubtraction(Vector2 a, Vector2 b)
+{
+	return (Vector2) { a.x - b.x, a.y - b.y };
+}
+
 // x, y and seed in case i need higher dimensions than 2d
 // Creds: Polygonz2007
-float getRandomVector(int x, int y, int seed)
+Vector2 getRandomVector(int x, int y, int seed)
 {
-	x += y * 100;
-	x -= seed * 827;
+	// Get random normalised vector based off location of point
+	srand((x * 8754327 + y * x * 298332 + y * 339812) & 34271);
+	float angle = (rand() & 53554) + seed;
 
-	x = ((x >> 16) ^ x) * 0x45d9f3b;
-	x = ((x >> 16) ^ x) * 0x45d9f3b;
-	x = (x >> 16) ^ x;
-
-	double r = (float)x / 2147483648.0f; // to float, 0 - 1
-
-	return r * r * (3.0f - 2.0f * r);
+	return (Vector2) { cosf(angle), sinf(angle) };
 
 }
 
@@ -70,22 +70,13 @@ float perlinGenerate1d(float x, int seed)
 	int xi = floor(x);
 	float rmix = x - xi;
 
-	float A = getRandomVector(xi, 0, seed);
-	float B = getRandomVector(xi + 1, 0, seed);
+	Vector2 A = (Vector2){ x, 0 };
+	Vector2 B = (Vector2){ x + 1, 0 };
 
+	float DA = dotProduct(A, getRandomVector(xi, 0, seed));
+	float DB = dotProduct(B, getRandomVector(xi, 0, seed));
 
-	// Interpolate
-	float result = lerp(A, B, rmix);
-
-	// Clamp
-	if (result < -1.0f)
-	{
-		result = -1.0f;
-	}
-	else if (result > 1.0f)
-	{
-		result = 1.0f;
-	}
+	float result = lerp(DA, DB, rmix);
 
 	return result;
 }
@@ -93,7 +84,7 @@ float perlinGenerate1d(float x, int seed)
 float perlinGenerate1dOctaves(int x, int seed, int octaves, float persistence)
 {
 	float total = 0.0f;
-	float maxAmplitude = 0.0f;
+	float maxAmplitude = 400.0f;
 	float amplitude = 1.0f;
 	float frequency = 1.0f;
 
@@ -110,43 +101,45 @@ float perlinGenerate1dOctaves(int x, int seed, int octaves, float persistence)
 	return total / maxAmplitude;
 }
 
-float perlinGenerate2d(float x, float y, int seed)
-{
-	float rmix = fmodf(x, 1.0f);
+float sample_perlin2d(float x, float y) {
+	//// Vector pos
+	//Vector2 pos = { x, y };
 
-	float rmiy = fmodf(y, 1.0f);
+	//// Int and remainer pos
+	//float fix = floorf(x), fiy = floorf(y);
+	//int ix = (int)floor(x), iy = (int)floor(y);
+	//float u = fmodf(x - (float)ix, 1.0f), v = fmodf(y - (float)iy, 1.0f);
 
-	float A = getRandomVector(x, y, 0);
-	float B = getRandomVector(x, y + 1, 0);
-	float C = getRandomVector(x + 1, y, 0);
-	float D = getRandomVector(x + 1, y + 1, 0);
+	//// Corners
+	//Vector2 c1 = { fix, fiy };
+	//Vector2 c2 = { fix + 1, fiy };
+	//Vector2 c3 = { fix, fiy + 1 };
+	//Vector2 c4 = { fix + 1, fiy + 1 };
 
-	// Interpolate
-	float AC = lerp(A, C, rmix);
-	float BD = lerp(B, D, rmix);
+	//// Find vectors to grid points
+	//Vector2 o1 = Vector2Subtract(pos, (Vector2) { fix, fiy });
+	//Vector2 o2 = Vector2Subtract(pos, (Vector2) { fix + 1, fiy });
+	//Vector2 o3 = Vector2Subtract(pos, (Vector2) { fix, fiy + 1 });
+	//Vector2 o4 = Vector2Subtract(pos, (Vector2) { fix + 1, fiy + 1 });
 
-	float result = lerp(AC, BD, rmiy);
+	//float d1 = dotProduct(o1, getRandomVector(ix, iy));
+	//float d2 = dotProduct(o2, getRandomVector(ix + 1, iy));
+	//float d3 = dotProduct(o3, getRandomVector(ix, iy + 1));
+	//float d4 = dotProduct(o4, getRandomVector(ix + 1, iy + 1));
 
-	// Clamp
-	if (result < -1.0f)
-	{
-		result = -1.0f;
-	}
-	else if (result > 1.0f)
-	{
-		result = 1.0f;
-	}
+	//float top = Lerp(d1, d2, fade(u));
+	//float bottom = Lerp(d3, d4, fade(u));
 
-	return result;
+	//return 0.5f + Lerp(top, bottom, fade(v)) * 0.5f;
 }
+
 
 int shapeOverworld(int seed, int startHeight, int** world)
 {
-	printf("THIS VERY COOL SHAPE OVERWORLD %f", floor(perlinGenerate1dOctaves(10, seed, 5, 0.5f)));
 	for (int x = 0; x < WORLDWIDTH; x++)
 	{
-		float terrainHeight = perlinGenerate1dOctaves(x, seed, 12, 0.5f);
-		float height = floor((terrainHeight + 1.0f) * 0.5f * 100);
+		float height = perlinGenerate1dOctaves(x, seed, 8, 0.5f);
+		printf("%f\n", height);
 		for (int y = 0; y < height + startHeight; y++)
 		{
 			world[x][y] = AIR;

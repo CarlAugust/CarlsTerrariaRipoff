@@ -16,9 +16,9 @@ enum TileType
 };
 
 int** getWorld();
-float perlinGenerate1d(int x, int seed);
-float perlinGenerate2d(int x, int y, int seed);
-float getRandomVector(int x, int y, int seed);
+float perlinGenerate1d(float x, int seed);
+float perlinGenerate2d(float x, float y, int seed);
+Vector2 getRandomVector(int x, int y, int seed);
 float dotProduct(Vector2 a, Vector2 b);
 int shapeOverworld(int seed, int startHeight, int** world);
 int** createWorld(int seed);
