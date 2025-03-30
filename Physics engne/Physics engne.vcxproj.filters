@@ -41,5 +41,8 @@
     <ClInclude Include="include\terrain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\universal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

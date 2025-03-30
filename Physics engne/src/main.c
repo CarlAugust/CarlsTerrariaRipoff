@@ -7,6 +7,7 @@
 #include "terrain.h"
 #include "character.h"
 #include "math.h"
+#include "universal.h"
 
 int main()
 {
@@ -49,8 +50,8 @@ int main()
         DrawRectangle(0, 0, 100, 100, GREEN);
         DrawRectangle(-screenWidth, screenHeight, screenWidth * 2, screenHeight, BLUE);
 
-        int playerTileX = (int)floor(player.body.position.x / 10);
-        int playerTileY = (int)floor(player.body.position.y / 10);
+        int playerTileX = (int)floor(player.body.position.x / TILESIZE);
+        int playerTileY = (int)floor(player.body.position.y / TILESIZE);
 
         int renderDistance = 50;
 
@@ -65,7 +66,7 @@ int main()
                     {
                         color = BROWN;
                     }
-                    DrawRectangle(x * 10, y * 10, 10, 10, color);
+                    DrawRectangle(x * TILESIZE, y * TILESIZE, TILESIZE, TILESIZE, color);
                 }
             }
         }

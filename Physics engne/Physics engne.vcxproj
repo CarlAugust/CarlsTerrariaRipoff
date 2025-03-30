@@ -22,6 +22,7 @@
     <ClInclude Include="include\character.h" />
     <ClInclude Include="include\physics.h" />
     <ClInclude Include="include\terrain.h" />
+    <ClInclude Include="include\universal.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\character.c" />

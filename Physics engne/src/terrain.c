@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <stdint.h>
 
 // Plan for terrain generation
 /*
@@ -42,6 +43,16 @@ int** getWorld()
 	return world;
 }
 
+float smoothstep(float x)
+{
+	return x * x * (3 - 2 * x);
+}
+
+float interpolate(float a, float b, float x)
+{
+	return a + smoothstep(x) * (b - a);
+}
+
 // Might be used idk
 float dotProduct(Vector2 a, Vector2 b)
 {
@@ -53,44 +64,51 @@ Vector2 vectorSubtraction(Vector2 a, Vector2 b)
 	return (Vector2) { a.x - b.x, a.y - b.y };
 }
 
+unsigned int hash(int x, int y, int seed) {
+	unsigned int h = x * 374761393 + y * 668265263 + seed * 69069;
+	h = (h ^ (h >> 13)) * 1274126177;
+	return h ^ (h >> 16);
+}
+
 // x, y and seed in case i need higher dimensions than 2d
 // Creds: Polygonz2007
 Vector2 getRandomVector(int x, int y, int seed)
 {
-	// Get random normalised vector based off location of point
-	srand((x * 8754327 + y * x * 298332 + y * 339812) & 34271);
-	float angle = (rand() & 53554) + seed;
-
-	return (Vector2) { cosf(angle), sinf(angle) };
+    unsigned int h = hash(x, y, seed);
+    float angle = (h % 360) * (M_PI / 180.0f); // Convert to radians
+    return (Vector2){ cosf(angle), sinf(angle) };
 
 }
+float getRandomGradient1D(int x, int seed) {
+	unsigned int h = hash(x, 0, seed); // Notice y is always 0
+	return ((float)h / UINT32_MAX) * 2.0f - 1.0f;
+}
+
 
 float perlinGenerate1d(float x, int seed)
 {
 	int xi = floor(x);
 	float rmix = x - xi;
 
-	Vector2 A = (Vector2){ x, 0 };
-	Vector2 B = (Vector2){ x + 1, 0 };
+	float A = getRandomGradient1D(xi, seed);
+	float B = getRandomGradient1D(xi + 1, seed);
 
-	float DA = dotProduct(A, getRandomVector(xi, 0, seed));
-	float DB = dotProduct(B, getRandomVector(xi, 0, seed));
-
-	float result = lerp(DA, DB, rmix);
-
+	float DA = A * rmix;
+	float DB = B * (rmix - 1.0f);
+	float result = interpolate(DA, DB, rmix);
 	return result;
 }
 
 float perlinGenerate1dOctaves(int x, int seed, int octaves, float persistence)
 {
 	float total = 0.0f;
-	float maxAmplitude = 400.0f;
+	float maxAmplitude = 0.0f;
 	float amplitude = 1.0f;
 	float frequency = 1.0f;
 
 	for (int i = 0; i < octaves; i++)
 	{
-		float noise = perlinGenerate1d(x * frequency, seed);
+		float noise = perlinGenerate1d((x / 100.f ) * frequency, seed);
 		total += noise * amplitude;
 		maxAmplitude += amplitude;
 		amplitude *= persistence;
@@ -101,7 +119,7 @@ float perlinGenerate1dOctaves(int x, int seed, int octaves, float persistence)
 	return total / maxAmplitude;
 }
 
-float sample_perlin2d(float x, float y) {
+float perlinGenerate2d(float x, float y, int seed) {
 	//// Vector pos
 	//Vector2 pos = { x, y };
 
@@ -138,8 +156,7 @@ int shapeOverworld(int seed, int startHeight, int** world)
 {
 	for (int x = 0; x < WORLDWIDTH; x++)
 	{
-		float height = perlinGenerate1dOctaves(x, seed, 8, 0.5f);
-		printf("%f\n", height);
+		float height = perlinGenerate1dOctaves(x, seed, 8, 0.5f) * 200;
 		for (int y = 0; y < height + startHeight; y++)
 		{
 			world[x][y] = AIR;
